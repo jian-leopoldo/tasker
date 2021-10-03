@@ -1,0 +1,11 @@
+task:
+  - module: node
+    name: Run postgresql
+    test: jian
+    log_file: "log_requester_2"
+    file: tasks/teste.js
+  - module: node
+    name: Run postgresql
+    test: jian
+    log_file: "log_requester"
+    file: tasks/teste.js
