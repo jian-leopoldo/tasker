@@ -15,7 +15,7 @@ go run src/*.go
 
 Some items to make project better
 
-- [] Separate project structure in modules
+- [] Separate project structure in modules - Doing
 - [] Convert commandline execution in aync execution
 - [] Provide a API to acess data
 - [] Add task scheduler
