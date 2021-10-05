@@ -9,3 +9,15 @@ Run any script or command configurated in tasker.yaml
 ```bash
 go run src/*.go
 ```
+
+
+## TODO Project
+
+Some items to make project better
+
+- [] Separate project structure in modules
+- [] Convert commandline execution in aync execution
+- [] Provide a API to acess data
+- [] Add task scheduler
+- [] Task execution using PubSub pattern
+
