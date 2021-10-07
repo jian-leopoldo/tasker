@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os/exec"
 	"strings"
+	"tasker/runner"
 )
 
 func runShell(params []string, file string) []byte {
@@ -30,23 +32,38 @@ func runScript(module string, file string, params []string) []byte {
 	return data
 }
 
-func extractCommand(task taskStruct) {
+func extractCommand(task TaskStruct) {
 	if task.Module == "bash" {
 		mountTaskBodyShell(task)
+	} else if task.Module == "go" {
+		mountTaskBodyGo(task)
 	} else {
 		mountTaskBody(task)
+
 	}
 }
 
-func mountTaskBody(task taskStruct) {
-	printHeader(task)
+func test(params string) string {
+	fmt.Println(params)
+	return params
+}
+
+func mountTaskBodyGo(task TaskStruct) {
+	printHeader(task, runner.RunScriptGo)
+	dataToReturn := runner.RunScriptGo(task.Module, task.File, task.Params)
+	writeLog(task.LogFile, string(dataToReturn))
+	printFooter()
+}
+
+func mountTaskBody(task TaskStruct) {
+	printHeader(task, runner.RunScriptGo)
 	dataToReturn := runScript(task.Module, task.File, task.Params)
 	writeLog(task.LogFile, string(dataToReturn))
 	printFooter()
 }
 
-func mountTaskBodyShell(task taskStruct) {
-	printHeader(task)
+func mountTaskBodyShell(task TaskStruct) {
+	printHeader(task, runner.RunScriptGo)
 	dataToReturn := runShell(task.Params, task.File)
 	writeLog(task.LogFile, string(dataToReturn))
 	printFooter()

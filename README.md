@@ -15,9 +15,10 @@ go run src/*.go
 
 Some items to make project better
 
+- [] Refactoring Module to mount in terminal feedback
 - [] Separate project structure in modules - Doing
 - [] Convert commandline execution in aync execution
 - [] Provide a API to acess data
 - [] Add task scheduler
 - [] Task execution using PubSub pattern
-
+- [] Improve documentation and README

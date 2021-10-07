@@ -8,7 +8,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type taskStruct struct {
+type TaskStruct struct {
 	Name    string   `yaml:"name"`
 	Module  string   `yaml:"module"`
 	File    string   `yaml:"file"`
@@ -16,17 +16,17 @@ type taskStruct struct {
 	Params  []string `yaml:"params"`
 }
 
-type taskList struct {
-	Task []taskStruct `yaml:"task"`
+type TaskList struct {
+	Task []TaskStruct `yaml:"task"`
 }
 
-func readConf(filename string) (*taskList, error) {
+func readConf(filename string) (*TaskList, error) {
 	buf, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
 
-	c := &taskList{}
+	c := &TaskList{}
 	err = yaml.Unmarshal(buf, c)
 	if err != nil {
 		return nil, fmt.Errorf("in file %q: %v", filename, err)
@@ -46,7 +46,7 @@ func main() {
 	runTasks(*tasksToRun)
 }
 
-func runTasks(tasksToRun taskList) {
+func runTasks(tasksToRun TaskList) {
 	for _, service := range tasksToRun.Task {
 		extractCommand(service) //run async
 	}
