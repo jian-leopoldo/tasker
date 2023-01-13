@@ -4,8 +4,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"sync"
 
 	"gopkg.in/yaml.v3"
+)
+
+const (
+	DefaultSchema = "tasker.yaml"
 )
 
 type taskStruct struct {
@@ -37,17 +42,14 @@ func readConf(filename string) (*taskList, error) {
 
 func main() {
 
-	tasksToRun, err := readConf("tasker.yaml")
+	tasksToRun, err := readConf(DefaultSchema)
 
 	if err != nil {
 		log.Fatal(err)
 	}
+	var wg sync.WaitGroup
 
-	runTasks(*tasksToRun)
-}
+	runTasks(*tasksToRun, &wg)
 
-func runTasks(tasksToRun taskList) {
-	for _, service := range tasksToRun.Task {
-		extractCommand(service) //run async
-	}
+	wg.Wait()
 }

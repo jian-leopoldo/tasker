@@ -4,6 +4,7 @@ import (
 	"log"
 	"os/exec"
 	"strings"
+	"sync"
 )
 
 func runShell(params []string, file string) []byte {
@@ -30,12 +31,14 @@ func runScript(module string, file string, params []string) []byte {
 	return data
 }
 
-func extractCommand(task taskStruct) {
+func extractCommand(task taskStruct, wg *sync.WaitGroup) {
+	wg.Add(1)
 	if task.Module == "bash" {
 		mountTaskBodyShell(task)
 	} else {
 		mountTaskBody(task)
 	}
+	wg.Done()
 }
 
 func mountTaskBody(task taskStruct) {
@@ -62,4 +65,10 @@ func extractParams(params []string) string {
 	}
 
 	return sb.String()
+}
+
+func runTasks(tasksToRun taskList, wg *sync.WaitGroup) {
+	for _, service := range tasksToRun.Task {
+		extractCommand(service, wg) //run async
+	}
 }
