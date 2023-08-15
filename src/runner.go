@@ -7,18 +7,6 @@ import (
 	"sync"
 )
 
-func runShell(params []string, file string) []byte {
-
-	commandToRun := extractParams(params) + file
-
-	data, err := exec.Command("sh", commandToRun).Output()
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	return data
-}
-
 func runScript(module string, file string, params []string) []byte {
 
 	commandToRun := extractParams(params) + file
@@ -33,24 +21,13 @@ func runScript(module string, file string, params []string) []byte {
 
 func extractCommand(task taskStruct, wg *sync.WaitGroup) {
 	wg.Add(1)
-	if task.Module == "bash" {
-		mountTaskBodyShell(task)
-	} else {
-		mountTaskBody(task)
-	}
+	mountTaskBody(task)
 	wg.Done()
 }
 
 func mountTaskBody(task taskStruct) {
 	printHeader(task)
 	dataToReturn := runScript(task.Module, task.File, task.Params)
-	writeLog(task.LogFile, string(dataToReturn))
-	printFooter()
-}
-
-func mountTaskBodyShell(task taskStruct) {
-	printHeader(task)
-	dataToReturn := runShell(task.Params, task.File)
 	writeLog(task.LogFile, string(dataToReturn))
 	printFooter()
 }

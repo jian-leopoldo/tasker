@@ -9,3 +9,9 @@ task:
     test: jian
     log_file: "log_requester"
     file: tasks/teste.js
+  - module: bash
+    name: Hello world
+    test: jian
+    log_file: "hello_world"
+    file: tasks/run_postgresql.sh
+
